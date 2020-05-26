@@ -31,6 +31,7 @@ public class ServerApplication {
             BufferedReader bf = new BufferedReader(new InputStreamReader(in));
             String fileName = "";
             while((fileName = bf.readLine()) != null) {
+                System.out.println(fileName);
                 InputStream in2 = getClass().getClassLoader().getResourceAsStream("jokes/" + fileName);
                 BufferedReader bf2 = new BufferedReader(new InputStreamReader(in2));
 
@@ -49,7 +50,7 @@ public class ServerApplication {
                             jokerunnning = false;
                             Joke joke = new Joke(jokeText.toString(), category);
                             jokeService.save(joke);
-
+                            System.out.println("jokes");
                             jokeText = new StringBuilder();
                         } else {
                             jokeText.append(line).append("\n");
