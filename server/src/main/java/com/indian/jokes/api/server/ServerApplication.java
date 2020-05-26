@@ -27,6 +27,7 @@ public class ServerApplication {
     @Bean
     ApplicationRunner applicationRunner(CategoryService categoryService, JokeService jokeService) {
         return args -> {
+            System.out.println("test");
             InputStream in = getClass().getClassLoader().getResourceAsStream("jokes");
             BufferedReader bf = new BufferedReader(new InputStreamReader(in));
             String fileName = "";
