@@ -22,4 +22,12 @@ public class JokeService {
     public Joke save(Joke joke) {
         return jokeRepo.save(joke);
     }
+
+    public Joke getRandom() {
+        List<Joke> jokeList = jokeRepo.findAll();
+        if (jokeList.size() < 1)
+            return null;
+
+        return jokeList.get((int)Math.floor(Math.random() * jokeList.size()));
+    }
 }

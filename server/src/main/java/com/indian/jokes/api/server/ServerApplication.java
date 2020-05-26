@@ -27,6 +27,10 @@ public class ServerApplication {
             Joke joke = new Joke("This is a fun joke", null);
             joke.setCategory(category);
             jokeService.save(joke);
+
+            Joke joke2 = new Joke("This is another fun joke", null);
+            joke2.setCategory(category);
+            jokeService.save(joke2);
         };
     }
 
