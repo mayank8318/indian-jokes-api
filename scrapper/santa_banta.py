@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
 
@@ -26,6 +25,7 @@ def nextPage(curPage):
     return None
 
 
+file = open('../server/src/main/resources/jokes/santabanta.txt', 'w+')
 for curPage in range(1, 4):
     jokeItems = driver.find_elements_by_class_name("maincontent")
 
@@ -36,10 +36,13 @@ for curPage in range(1, 4):
             try:
                 j.find_element_by_tag_name("a")
             except NoSuchElementException:
-                print(j.text)
-                print("")
+                file.write("JOKE_START\n")
+                file.write(j.text + "\n")
+                file.write("JOKE_END\n")
+                file.write("\n\n")
 
     a = nextPage(curPage)
     a.click()
 
+file.close()
 driver.close()
