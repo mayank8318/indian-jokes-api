@@ -19,6 +19,11 @@ public class JokeService {
         return jokeRepo.findAll();
     }
 
+    public Joke getById(long id) {
+        return jokeRepo.findById(id)
+                .orElse(null);
+    }
+
     public Joke save(Joke joke) {
         return jokeRepo.save(joke);
     }
