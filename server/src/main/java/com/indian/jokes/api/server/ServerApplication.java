@@ -28,7 +28,7 @@ public class ServerApplication {
     ApplicationRunner applicationRunner(CategoryService categoryService, JokeService jokeService) {
         return args -> {
             System.out.println("test");
-            InputStream in = getClass().getClassLoader().getResourceAsStream("jokes");
+            InputStream in = getClass().getClassLoader().getResourceAsStream("jokes2");
             BufferedReader bf = new BufferedReader(new InputStreamReader(in));
             String fileName = "";
             while((fileName = bf.readLine()) != null) {
