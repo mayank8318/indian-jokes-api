@@ -10,7 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,20 +27,23 @@ public class ServerApplication {
     @Bean
     ApplicationRunner applicationRunner(CategoryService categoryService, JokeService jokeService) {
         return args -> {
-//            File file[] = (new File(getClass().getResource("jokes").toURI())).listFiles();
-            File file[] = new ClassPathResource("jokes").getFile().listFiles();
-            for (File f : file) {
+            InputStream in = getClass().getClassLoader().getResourceAsStream("jokes");
+            BufferedReader bf = new BufferedReader(new InputStreamReader(in));
+            String fileName = "";
+            while((fileName = bf.readLine()) != null) {
+                InputStream in2 = getClass().getClassLoader().getResourceAsStream("jokes/" + fileName);
+                BufferedReader bf2 = new BufferedReader(new InputStreamReader(in2));
+
                 StringBuilder jokeText = new StringBuilder();
                 String start = "JOKE_START";
                 String end = "JOKE_END";
                 boolean jokerunnning = false;
 
-                Category category = new Category(f.getName().substring(0, f.getName().indexOf('.')), new ArrayList<>());
+                Category category = new Category(fileName.substring(0, fileName.indexOf('.')), new ArrayList<>());
                 category = categoryService.save(category);
 
-                Scanner scanner = new Scanner(f);
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
+                String line = "";
+                while((line = bf2.readLine()) != null) {
                     if (jokerunnning) {
                         if (line.contentEquals(end)) {
                             jokerunnning = false;
@@ -55,19 +61,10 @@ public class ServerApplication {
                         }
                     }
                 }
-                scanner.close();
-            }
 
-//            Category category = new Category("santabanta", new ArrayList<>());
-//            category = categoryService.save(category);
-//
-//            Joke joke = new Joke("This is a fun joke", null);
-//            joke.setCategory(category);
-//            jokeService.save(joke);
-//
-//            Joke joke2 = new Joke("This is another fun joke", null);
-//            joke2.setCategory(category);
-//            jokeService.save(joke2);
+                bf2.close();
+            }
+            bf.close();
         };
     }
 
