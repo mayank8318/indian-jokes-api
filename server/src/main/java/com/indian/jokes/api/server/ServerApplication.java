@@ -28,12 +28,37 @@ public class ServerApplication {
     ApplicationRunner applicationRunner(CategoryService categoryService, JokeService jokeService) {
         return args -> {
             System.out.println("test");
-            InputStream in = getClass().getClassLoader().getResourceAsStream("jokes2");
+            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("santabanta.txt");
             BufferedReader bf = new BufferedReader(new InputStreamReader(in));
-            String fileName = "";
-            while((fileName = bf.readLine()) != null) {
-                System.out.println(fileName);
-                InputStream in2 = getClass().getClassLoader().getResourceAsStream("jokes/" + fileName);
+            String line = "";
+
+            StringBuilder jokeText = new StringBuilder();
+            String start = "JOKE_START";
+            String end = "JOKE_END";
+            boolean jokerunnning = false;
+
+            Category category = new Category("santabanta.txt".substring(0, "santabanta.txt".indexOf('.')), new ArrayList<>());
+            category = categoryService.save(category);
+
+            while((line = bf.readLine()) != null) {
+                System.out.println(line);
+                if (jokerunnning) {
+                    if (line.contentEquals(end)) {
+                        jokerunnning = false;
+                        Joke joke = new Joke(jokeText.toString(), category);
+                        jokeService.save(joke);
+                        System.out.println("jokes");
+                        jokeText = new StringBuilder();
+                    } else {
+                        jokeText.append(line).append("\n");
+                    }
+                } else {
+                    if (line.contentEquals(start))
+                    {
+                        jokerunnning = true;
+                    }
+                }
+                /*InputStream in2 = getClass().getClassLoader().getResourceAsStream("jokes/" + fileName);
                 BufferedReader bf2 = new BufferedReader(new InputStreamReader(in2));
 
                 StringBuilder jokeText = new StringBuilder();
@@ -64,7 +89,7 @@ public class ServerApplication {
                     }
                 }
 
-                bf2.close();
+                bf2.close();*/
             }
             bf.close();
         };
