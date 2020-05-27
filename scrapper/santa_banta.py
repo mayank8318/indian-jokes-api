@@ -25,7 +25,7 @@ def nextPage(curPage):
     return None
 
 
-file = open('../server/src/main/resources/jokes/santabanta.txt', 'w+')
+file = open('../server/src/main/resources/santabanta.txt', 'w+')
 for curPage in range(1, 4):
     jokeItems = driver.find_elements_by_class_name("maincontent")
 
