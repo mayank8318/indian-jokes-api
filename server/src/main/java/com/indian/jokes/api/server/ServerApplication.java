@@ -8,14 +8,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 @SpringBootApplication
 public class ServerApplication {
@@ -27,38 +24,13 @@ public class ServerApplication {
     @Bean
     ApplicationRunner applicationRunner(CategoryService categoryService, JokeService jokeService) {
         return args -> {
-            System.out.println("test");
-            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("santabanta.txt");
+            InputStream in = getClass().getClassLoader().getResourceAsStream("jokes_meta.txt");
             BufferedReader bf = new BufferedReader(new InputStreamReader(in));
-            String line = "";
+            String fileName = "";
 
-            StringBuilder jokeText = new StringBuilder();
-            String start = "JOKE_START";
-            String end = "JOKE_END";
-            boolean jokerunnning = false;
-
-            Category category = new Category("santabanta.txt".substring(0, "santabanta.txt".indexOf('.')), new ArrayList<>());
-            category = categoryService.save(category);
-
-            while((line = bf.readLine()) != null) {
-                System.out.println(line);
-                if (jokerunnning) {
-                    if (line.contentEquals(end)) {
-                        jokerunnning = false;
-                        Joke joke = new Joke(jokeText.toString(), category);
-                        jokeService.save(joke);
-                        System.out.println("jokes");
-                        jokeText = new StringBuilder();
-                    } else {
-                        jokeText.append(line).append("\n");
-                    }
-                } else {
-                    if (line.contentEquals(start))
-                    {
-                        jokerunnning = true;
-                    }
-                }
-                /*InputStream in2 = getClass().getClassLoader().getResourceAsStream("jokes/" + fileName);
+            while((fileName = bf.readLine()) != null) {
+                System.out.println(fileName);
+                InputStream in2 = getClass().getClassLoader().getResourceAsStream(fileName);
                 BufferedReader bf2 = new BufferedReader(new InputStreamReader(in2));
 
                 StringBuilder jokeText = new StringBuilder();
@@ -76,7 +48,6 @@ public class ServerApplication {
                             jokerunnning = false;
                             Joke joke = new Joke(jokeText.toString(), category);
                             jokeService.save(joke);
-                            System.out.println("jokes");
                             jokeText = new StringBuilder();
                         } else {
                             jokeText.append(line).append("\n");
@@ -89,7 +60,7 @@ public class ServerApplication {
                     }
                 }
 
-                bf2.close();*/
+                bf2.close();
             }
             bf.close();
         };
