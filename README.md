@@ -1,5 +1,5 @@
 # Indian Jokes API
-This is the repository of the indian-jokes-api live [here](http://indian-jokes-api.herokuapp.com). 
+This is the repository of the indian-jokes-api live [here](https://indian-jokes-api.herokuapp.com/jokes/random). 
 
 *Note* - I make no claim on ownership of these files, nor do I necessarily endorse the jokes in them. This api is provided for fun purposes. 
 
