@@ -4,7 +4,7 @@ This is the repository of the indian-jokes-api live [here](https://indian-jokes-
 *Note* - I make no claim on ownership of these files, nor do I necessarily endorse the jokes in them. This api is provided for fun purposes. 
 
 ## Supported API endpoints
-Base URL -> http://indian-jokes-api.herokuapp.com
+Base URL -> https://indian-jokes-api.herokuapp.com
 
 
 
